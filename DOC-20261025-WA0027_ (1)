@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Nexus – Protótipo do aplicativo</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light;
+--pg:#D9E1F1;--pgt:#192338;--ink:#192338;--mut:#44557a;--bg:#D9E1F1;--card:#fff;--line:#b4c3de;--steel:#1E2E4F;--y:#8FB3E2;--ok:#2f7d4f;--warn:#b86e00;--bad:#b3362d}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;--pg:#192338;--pgt:#D9E1F1;--line:#31487A}}
+:root[data-theme="dark"]{color-scheme:dark;--pg:#192338;--pgt:#D9E1F1;--line:#31487A}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--pg);color:var(--pgt);font-family:Barlow,system-ui,sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:16px 12px 28px}
+h1,h2,h3{font-family:"Barlow Condensed",Impact,sans-serif;margin:0;letter-spacing:.2px}
+.top{max-width:420px;width:100%;margin-bottom:12px}
+.top h1{font-size:26px}.top p{margin:2px 0 8px;font-size:14px;opacity:.75}
+.jump{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px}
+.jump button{flex:none;border:1px solid var(--line);background:transparent;color:inherit;border-radius:99px;padding:5px 11px;font:500 13px Barlow,sans-serif;cursor:pointer}
+.jump button.on{background:var(--y);color:#192338;border-color:var(--y)}
+.phone{width:100%;max-width:390px;height:780px;max-height:calc(100vh - 150px);min-height:620px;background:var(--bg);color:var(--ink);border-radius:34px;border:8px solid #0f151a;overflow:hidden;position:relative;display:flex;flex-direction:column}
+.scr{display:none;flex:1;flex-direction:column;overflow-y:auto;min-height:0}
+.scr.on{display:flex}
+.bar{background:var(--steel);color:#fff;padding:18px 18px 14px;display:flex;align-items:center;gap:10px}
+.bar h2{font-size:24px;flex:1}
+.bar .back{background:none;border:0;color:#fff;font-size:22px;cursor:pointer;padding:0 4px}
+.body{padding:16px;display:flex;flex-direction:column;gap:12px;flex:1}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px}
+.btn{background:#31487A;color:#fff;border:0;border-radius:10px;padding:14px;font:600 16px Barlow,sans-serif;cursor:pointer;width:100%}
+.btn.sec{background:transparent;border:1.5px solid var(--steel);color:var(--steel)}
+.btn.bad{background:transparent;border:1.5px solid var(--bad);color:var(--bad)}
+label{font-size:13px;font-weight:600;display:block;margin-bottom:4px}
+input,select,textarea{width:100%;border:1.5px solid var(--line);border-radius:10px;padding:12px;font:16px Barlow,sans-serif;background:#fff;color:var(--ink)}
+input:focus,select:focus,textarea:focus,button:focus-visible{outline:3px solid #31487A;outline-offset:1px}
+.err{color:var(--bad);font-size:13px;min-height:16px;margin-top:3px}
+.field{display:block}
+.chip{display:inline-block;border-radius:99px;padding:3px 10px;font-size:12px;font-weight:600;background:#e6ebf5;color:var(--steel)}
+.s-Solicitada{background:#e6ebf5}.s-Em-análise{background:#cfdcf3;color:#1E2E4F}.s-Orçamento-enviado{background:#8FB3E2;color:#192338}.s-Aprovada,.s-Concluída{background:#d9eee2;color:var(--ok)}.s-Em-execução{background:#31487A;color:#fff}
+.nav{display:flex;background:var(--card);border-top:1px solid var(--line)}
+.nav button{flex:1;background:none;border:0;padding:10px 0 12px;font:500 12px Barlow,sans-serif;color:var(--mut);cursor:pointer}
+.nav button.on{color:var(--ink);font-weight:600;box-shadow:inset 0 3px 0 #31487A}
+.nav b{display:block;font-size:18px;line-height:1.2}
+.splash{background:#192338;color:#fff;align-items:center;justify-content:center;text-align:center;gap:6px;cursor:pointer}
+.logo{width:76px;height:76px;border-radius:18px;background:var(--y);color:#192338;display:grid;place-items:center;font:700 40px "Barlow Condensed",sans-serif;transform:rotate(-6deg)}
+.row{display:flex;gap:10px}.row>*{flex:1}
+.svc{display:flex;gap:12px;align-items:center;cursor:pointer;text-align:left;width:100%;font:inherit;color:inherit}
+.ico{flex:none;width:46px;height:46px;border-radius:10px;background:var(--steel);color:var(--y);display:grid;place-items:center;font:700 20px "Barlow Condensed",sans-serif}
+.svc small,.muted{color:var(--mut);font-size:13px}
+.tl{list-style:none;margin:0;padding:0}
+.tl li{padding:0 0 12px 22px;position:relative;font-size:14px;color:var(--mut)}
+.tl li::before{content:"";position:absolute;left:3px;top:4px;width:10px;height:10px;border-radius:50%;background:var(--line)}
+.tl li.done{color:var(--ink);font-weight:600}.tl li.done::before{background:#31487A}
+.toast{position:absolute;left:14px;right:14px;bottom:76px;background:var(--steel);color:#fff;border-radius:10px;padding:12px 14px;font-size:14px;display:none}
+.toast.on{display:block}
+</style>
+</head>
+<body>
+<div class="top">
+  <h1>Nexus – protótipo do app</h1>
+  <p>Toque nas telas para navegar ou use os atalhos.</p>
+  <div class="jump" id="jump"></div>
+</div>
+
+<div class="phone" id="phone">
+
+<section class="scr splash on" id="splash" onclick="go('login')">
+  <div class="logo">N</div><h1 style="font-size:40px">Nexus</h1>
+  <div style="opacity:.75;font-size:14px">Automação industrial na palma da mão</div>
+</section>
+
+<section class="scr" id="login">
+  <div class="bar"><h2>Entrar</h2></div>
+  <div class="body">
+    <div class="row"><button class="btn" id="tabIn" onclick="tab(0)">Login</button><button class="btn sec" id="tabUp" onclick="tab(1)">Cadastro</button></div>
+    <div class="field" id="nmBox" hidden><label for="nm">Nome completo</label><input id="nm" autocomplete="name"><div class="err" id="eNm"></div></div>
+    <div class="field"><label for="em">E-mail</label><input id="em" type="email" placeholder="voce@empresa.com.br"><div class="err" id="eEm"></div></div>
+    <div class="field"><label for="pw">Senha</label><input id="pw" type="password" placeholder="mínimo 6 caracteres"><div class="err" id="ePw"></div></div>
+    <button class="btn" id="goBtn" onclick="auth()">Entrar</button>
+    <div class="muted" style="text-align:center">Esqueceu a senha?</div>
+  </div>
+</section>
+
+<section class="scr" id="home">
+  <div class="bar"><h2 id="hi">Olá!</h2></div>
+  <div class="body">
+    <button class="btn" onclick="newReq()">Solicitar orçamento</button>
+    <div class="card"><div class="muted">Orçamento em andamento</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px"><b>#1024 · Sensor de vibração SV-300</b></div>
+      <div style="margin-top:6px"><span class="chip s-Em-análise">Em análise</span></div></div>
+    <h3 style="font-size:20px">Produtos em destaque</h3>
+    <div id="homeSvc" style="display:flex;flex-direction:column;gap:8px"></div>
+  </div>
+</section>
+
+<section class="scr" id="servicos">
+  <div class="bar"><h2>Produtos</h2></div>
+  <div class="body">
+    <input id="q" placeholder="Buscar por nome, código ou aplicação" oninput="renderSvc()" aria-label="Buscar produto">
+    <div id="chips" style="display:flex;gap:8px;overflow-x:auto;padding-bottom:2px"></div>
+    <div id="list" style="display:flex;flex-direction:column;gap:8px"></div>
+  </div>
+</section>
+
+<section class="scr" id="detalhe">
+  <div class="bar"><button class="back" onclick="go('servicos')" aria-label="Voltar">‹</button><h2 id="dT"></h2></div>
+  <div class="body">
+    <div class="card"><span class="chip" id="dC"></span><p id="dD" style="margin:8px 0 0"></p></div>
+    <div class="card"><b>Especificações técnicas</b><ul id="dS" style="margin:6px 0 0;padding-left:18px;color:var(--mut);font-size:14px"></ul></div>
+    <div class="card"><b>Condição comercial</b><div class="muted" id="dP"></div></div>
+    <button class="btn" style="margin-top:auto" onclick="newReq(cur)">Solicitar orçamento</button>
+  </div>
+</section>
+
+<section class="scr" id="solic">
+  <div class="bar"><button class="back" onclick="go('servicos')" aria-label="Voltar">‹</button><h2>Solicitar orçamento</h2></div>
+  <div class="body">
+    <div class="field"><label for="sv">Produto</label><select id="sv"></select></div>
+    <div class="field"><label for="eq">Quantidade</label><input id="eq" type="number" min="1" placeholder="Ex.: 10"><div class="err" id="eEq"></div></div>
+    <div class="row">
+      <div class="field"><label for="tp">Aplicação</label><select id="tp"><option>Nova instalação</option><option>Modernização</option></select></div>
+      <div class="field"><label for="ur">Prazo desejado</label><select id="ur"><option>Até 30 dias</option><option>Até 60 dias</option></select></div>
+    </div>
+    <div class="field"><label for="ds">Mensagem</label><textarea id="ds" rows="3"></textarea><div class="err" id="eDs"></div></div>
+    <button class="btn" onclick="send()">Enviar pedido de orçamento</button>
+  </div>
+</section>
+
+<section class="scr" id="minhas">
+  <div class="bar"><h2>Minhas solicitações</h2></div>
+  <div class="body" id="reqs" style="gap:8px"></div>
+</section>
+
+<section class="scr" id="reqDet">
+  <div class="bar"><button class="back" onclick="go('minhas')" aria-label="Voltar">‹</button><h2 id="rT"></h2></div>
+  <div class="body">
+    <div class="card"><b id="rS"></b><div class="muted" id="rI" style="margin-top:4px"></div></div>
+    <div class="card"><b>Andamento</b><ul class="tl" id="rTl" style="margin-top:10px"></ul></div>
+    <button class="btn bad" id="cancel" onclick="cancelReq()">Cancelar solicitação</button>
+    <div class="muted" id="cancelNote"></div>
+  </div>
+</section>
+
+<section class="scr" id="perfil">
+  <div class="bar"><h2>Perfil</h2></div>
+  <div class="body">
+    <div class="field"><label for="pn">Nome</label><input id="pn" value="Carlos Silva"></div>
+    <div class="field"><label for="pe">E-mail</label><input id="pe" value="carlos@fabrica.com.br"></div>
+    <div class="field"><label for="pc">Empresa</label><input id="pc" value="Metalúrgica Alfa"></div>
+    <button class="btn" onclick="toast('Dados atualizados')">Salvar alterações</button>
+    <button class="btn sec" onclick="logout()">Sair da conta</button>
+  </div>
+</section>
+
+<nav class="nav" id="nav" hidden>
+  <button data-s="home" onclick="go('home')"><b>⌂</b>Início</button>
+  <button data-s="servicos" onclick="go('servicos')"><b>⚙</b>Produtos</button>
+  <button data-s="minhas" onclick="go('minhas')"><b>☰</b>Solicitações</button>
+  <button data-s="perfil" onclick="go('perfil')"><b>☺</b>Perfil</button>
+</nav>
+<div class="toast" id="toast" role="status"></div>
+</div>
+
+<script>
+var SV=[
+ {id:0,n:"Sensor de vibração triaxial SV-300",c:"Sensores",i:"SV-300",d:"Mede vibração em três eixos e temperatura de carcaça em motores, bombas e redutores.",s:["Vibração em 3 eixos","Temperatura de carcaça","Para motores, bombas e redutores"],p:"Sob orçamento"},
+ {id:1,n:"Sensor indutivo de proximidade SI-M18",c:"Sensores",i:"SI-M18",d:"Detecta peças metálicas sem contato, para contagem, posicionamento e fim de curso.",s:["Formato M18","Detecção sem contato","Contagem, posicionamento e fim de curso"],p:"Sob orçamento"},
+ {id:2,n:"Transmissor de temperatura ST-100",c:"Sensores",i:"ST-100",d:"Sonda PT100 com transmissor 4–20 mA para fornos, estufas e linhas de envase.",s:["Sonda PT100","Saída 4–20 mA","Fornos, estufas e linhas de envase"],p:"Sob orçamento"},
+ {id:3,n:"Robô colaborativo RC-10",c:"Robótica",i:"RC-10",d:"Cobot de seis eixos com 10 kg de carga útil para alimentar máquinas e paletizar com segurança.",s:["Eixos: 6","Carga útil: 10 kg","Alcance: 1.300 mm","Repetibilidade: ±0,05 mm","Alimentação: 100 a 240 Vca","Interfaces: Ethernet, Modbus TCP, E/S digitais","Peso: 33 kg · Proteção IP54"],p:"Sob orçamento"},
+ {id:4,n:"Robô SCARA RS-500",c:"Robótica",i:"RS-500",d:"Robô de quatro eixos para montagem e pick and place de alta velocidade.",s:["4 eixos","Montagem","Pick and place de alta velocidade"],p:"Sob orçamento"},
+ {id:5,n:"CLP modular CL-2400",c:"CLPs e IHM",i:"CL-2400",d:"Controlador programável com 24 pontos de E/S e comunicação Profinet, Modbus TCP e OPC UA.",s:["24 pontos de E/S","Profinet","Modbus TCP","OPC UA"],p:"Sob orçamento"},
+ {id:6,n:"IHM touch IH-10",c:"CLPs e IHM",i:"IH-10",d:"Interface homem-máquina para operar e visualizar processos no painel.",s:["Tela de 10,1 polegadas","Touch","Operação e visualização de processos"],p:"Sob orçamento"},
+ {id:7,n:"Gateway IoT Edge GW-100",c:"Conectividade",i:"GW-100",d:"Conecta sensores e CLPs à nuvem usando OPC UA, Modbus e MQTT, com memória para falhas de rede.",s:["OPC UA, Modbus e MQTT","Memória para falhas de rede","Conecta sensores e CLPs à nuvem"],p:"Sob orçamento"},
+ {id:8,n:"Plataforma ATS Monitor",c:"Software",i:"AM-CLOUD",d:"Painéis de OEE, alertas e histórico por máquina, acessíveis no navegador e no celular.",s:["Painéis de OEE","Alertas","Histórico por máquina","Acesso por navegador e celular"],p:"Sob orçamento"},
+ {id:9,n:"Kit de manutenção preditiva MP-KIT",c:"Kits de projeto",i:"MP-KIT",d:"Sensores, gateway e licença da plataforma para começar a monitorar até quatro ativos.",s:["Sensores","Gateway","Licença da plataforma","Até 4 ativos"],p:"Sob orçamento"}];
+var ST=["Solicitada","Em análise","Orçamento enviado","Aprovada","Em execução","Concluída"];
+var R=[{id:1024,sv:"Sensor de vibração triaxial SV-300",eq:"Qtd: 40",st:1},{id:1019,sv:"Robô colaborativo RC-10",eq:"Qtd: 1",st:5}];
+var cur=0,cat="Todos",curR=null,user="Carlos",mode=0,logged=false;
+var $=function(i){return document.getElementById(i)};
+var NAMES={splash:0,login:1,home:2,servicos:3,detalhe:4,solic:5,minhas:6,reqDet:7,perfil:8};
+var LBL=[["splash","1 Splash"],["login","2 Login"],["home","3 Home"],["servicos","4 Serviços"],["detalhe","5 Detalhes"],["solic","6 Solicitação"],["minhas","7 Minhas solicitações"],["reqDet","8 Detalhe do status"],["perfil","9 Perfil"]];
+function go(id){
+  if(!logged&&id!=="splash"&&id!=="login"){id="login"}
+  document.querySelectorAll(".scr").forEach(function(s){s.classList.toggle("on",s.id===id)});
+  var nav=$("nav");nav.hidden=!(id!=="splash"&&id!=="login");
+  nav.querySelectorAll("button").forEach(function(b){var m=b.dataset.s;b.classList.toggle("on",m===id||(m==="servicos"&&(id==="detalhe"||id==="solic"))||(m==="minhas"&&id==="reqDet"))});
+  document.querySelectorAll("#jump button").forEach(function(b){b.classList.toggle("on",b.dataset.s===id)});
+  if(id==="minhas")renderReqs();if(id==="home")renderHome();if(id==="servicos")renderSvc();
+  $(id).scrollTop=0;
+}
+function item(s,fn){return '<button class="card svc" onclick="'+fn+'('+s.id+')"><div class="ico">'+s.i.split("-")[0]+'</div><div><b>'+s.n+'</b><br><small>'+s.i+' · '+s.c+'</small></div></button>'}
+function renderHome(){$("hi").textContent="Olá, "+user;$("homeSvc").innerHTML=SV.slice(0,2).map(function(s){return item(s,"openSvc")}).join("")}
+function renderSvc(){
+  var cs=["Todos","Sensores","Robótica","CLPs e IHM","Conectividade","Software","Kits de projeto"];
+  $("chips").innerHTML=cs.map(function(c){return '<button class="btn '+(c===cat?'':'sec')+'" style="padding:8px 14px;font-size:14px;flex:none;width:auto;white-space:nowrap" onclick="cat=\''+c+'\';renderSvc()">'+c+'</button>'}).join("");
+  var q=$("q").value.toLowerCase();
+  var L=SV.filter(function(s){return(cat==="Todos"||s.c===cat)&&(s.n+" "+s.i+" "+s.d).toLowerCase().indexOf(q)>-1});
+  $("list").innerHTML=L.length?L.map(function(s){return item(s,"openSvc")}).join(""):'<div class="muted card">Nenhum produto encontrado. Tente outro termo ou categoria.</div>';
+}
+function openSvc(i){cur=i;var s=SV[i];$("dT").textContent=s.n;$("dC").textContent=s.i+" · "+s.c;$("dD").textContent=s.d;$("dS").innerHTML=s.s.map(function(x){return"<li>"+x+"</li>"}).join("");$("dP").textContent=s.p;go("detalhe")}
+function newReq(i){$("sv").innerHTML=SV.map(function(s){return'<option value="'+s.id+'">'+s.n+'</option>'}).join("");$("sv").value=i||0;["eq","ds"].forEach(function(f){$(f).value="";});$("eEq").textContent=$("eDs").textContent="";go("solic")}
+function send(){
+  var ok=true;
+  if(!($("eq").value>=1)){$("eEq").textContent="Informe uma quantidade de 1 ou mais.";ok=false}else $("eEq").textContent="";
+  if($("ds").value.trim().length<10){$("eDs").textContent="Descreva sua necessidade com pelo menos 10 caracteres.";ok=false}else $("eDs").textContent="";
+  if(!ok)return;
+  var id=Math.max.apply(null,R.map(function(r){return r.id}))+1;
+  R.unshift({id:id,sv:SV[$("sv").value].n,eq:"Qtd: "+$("eq").value,st:0});
+  toast("Solicitação #"+id+" registrada");go("minhas");
+}
+function renderReqs(){$("reqs").innerHTML=R.map(function(r,i){var s=ST[r.st];return'<button class="card svc" onclick="openReq('+i+')"><div style="flex:1"><b>#'+r.id+' · '+r.sv+'</b><br><small>'+r.eq+'</small></div><span class="chip s-'+s.replace(/ /g,"-")+'">'+s+'</span></button>'}).join("")}
+function openReq(i){curR=i;var r=R[i];$("rT").textContent="Solicitação #"+r.id;$("rS").textContent=r.sv;$("rI").textContent=r.eq+" · Status: "+ST[r.st];
+  $("rTl").innerHTML=ST.map(function(s,k){return'<li class="'+(k<=r.st?"done":"")+'">'+s+'</li>'}).join("");
+  var can=r.st<=1;$("cancel").hidden=!can;$("cancelNote").textContent=can?"":"O cancelamento só é possível antes do início do atendimento.";go("reqDet")}
+function cancelReq(){R.splice(curR,1);toast("Solicitação cancelada");go("minhas")}
+function tab(m){mode=m;$("nmBox").hidden=!m;$("goBtn").textContent=m?"Criar conta":"Entrar";$("tabIn").className="btn"+(m?" sec":"");$("tabUp").className="btn"+(m?"":" sec")}
+function auth(){
+  var ok=true,em=$("em").value.trim();
+  if(mode&&!$("nm").value.trim()){$("eNm").textContent="Informe seu nome.";ok=false}else $("eNm").textContent="";
+  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)){$("eEm").textContent="Digite um e-mail válido, como nome@empresa.com.br.";ok=false}else $("eEm").textContent="";
+  if($("pw").value.length<6){$("ePw").textContent="A senha precisa ter pelo menos 6 caracteres.";ok=false}else $("ePw").textContent="";
+  if(!ok)return;
+  logged=true;user=mode?$("nm").value.trim().split(" ")[0]:"Carlos";go("home");
+}
+function logout(){logged=false;$("pw").value="";go("login")}
+function toast(t){var e=$("toast");e.textContent=t;e.classList.add("on");setTimeout(function(){e.classList.remove("on")},2200)}
+$("jump").innerHTML=LBL.map(function(l){return'<button data-s="'+l[0]+'" onclick="'+(l[0]==="detalhe"?"openSvc(cur)":l[0]==="reqDet"?"openReq(0)":l[0]==="solic"?"newReq()":"go(\\'"+l[0]+"\\')")+'">'+l[1]+'</button>'}).join("");
+// atalhos de visualização liberam as telas internas
+$("jump").addEventListener("click",function(){});
+document.querySelectorAll("#jump button").forEach(function(b){var s=b.dataset.s;b.onclick=function(){if(s!=="splash"&&s!=="login")logged=true;if(s==="detalhe")openSvc(cur);else if(s==="reqDet")openReq(0);else if(s==="solic")newReq();else go(s)}});
+</script>
+</body>
+</html>
