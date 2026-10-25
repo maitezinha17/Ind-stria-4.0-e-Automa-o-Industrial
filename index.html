@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ATS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<a class="skip" href="#conteudo" data-action="skip">Ir para o conteúdo</a>
+<header class="hdr">
+  <div class="wrap">
+    <a class="brand" href="#inicio" data-go="inicio" aria-label="ATS, página inicial">
+      <svg width="30" height="30" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" aria-hidden="true"><path d="M15 2.5l10.8 6.25v12.5L15 27.5 4.2 21.25V8.75z"/><path d="M15 9v12M9.5 18l5.5-9 5.5 9" stroke-linecap="round"/></svg>
+      <span>ATS</span>
+    </a>
+    <nav class="nav" id="nav" aria-label="Principal">
+      <a href="#inicio" data-go="inicio" data-r="inicio">Início</a>
+      <a href="#produtos" data-go="produtos" data-r="produtos produto">Produtos</a>
+      <a href="#solucoes" data-go="solucoes" data-r="solucoes">Soluções</a>
+      <a href="#sobre" data-go="sobre" data-r="sobre">Sobre</a>
+      <a href="#contato" data-go="contato" data-r="contato">Contato</a>
+      <a href="#orcamento" data-go="orcamento" data-r="orcamento confirmacao">Orçamento</a>
+    </nav>
+    <div class="hdr-actions">
+      <button class="icon-btn" type="button" data-action="theme" aria-label="Alternar entre tema claro e escuro" title="Alternar tema">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3v18" /><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor"/></svg>
+      </button>
+      <a class="btn btn-primary btn-sm" id="authbtn" href="#login" data-go="login">Entrar</a>
+      <button class="icon-btn menu-btn" type="button" data-action="menu" id="menubtn" aria-expanded="false" aria-controls="nav" aria-label="Abrir menu">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="conteudo" tabindex="-1"></main>
+
+<footer class="ftr">
+  <div class="wrap">
+    <div>
+      <h4>ATS</h4>
+      <p class="muted">Sensores, robôs, CLPs e monitoramento para a indústria 4.0.</p>
+    </div>
+    <div>
+      <h4>Navegação</h4>
+      <ul>
+        <li><a href="#produtos" data-go="produtos">Produtos</a></li>
+        <li><a href="#solucoes" data-go="solucoes">Soluções</a></li>
+        <li><a href="#sobre" data-go="sobre">Sobre a empresa</a></li>
+        <li><a href="#orcamento" data-go="orcamento">Solicitar orçamento</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Contato</h4>
+      <ul>
+        <li>contato@ats.example</li>
+        <li>(19) 3555-0100</li>
+        <li>Seg a sex, 8h às 18h</li>
+      </ul>
+    </div>
+    <p class="note">A ATS é uma empresa fictícia criada para o Trabalho Integrador do 2º ano do SESI. Produtos, preços, telefones e endereços são exemplos. Os dados de cadastro e solicitações ficam salvos apenas neste navegador.</p>
+  </div>
+</footer>
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+<script src="js/app.js"></script>
+</body>
+</html>
